@@ -2,10 +2,14 @@ package ro.projects.polls.service;
 
 import com.uwetrottmann.tmdb2.Tmdb;
 import com.uwetrottmann.tmdb2.entities.BaseMovie;
+import com.uwetrottmann.tmdb2.entities.Movie;
 import com.uwetrottmann.tmdb2.entities.MovieResultsPage;
+import com.uwetrottmann.tmdb2.services.MoviesService;
 import com.uwetrottmann.tmdb2.services.SearchService;
+import javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,5 +41,19 @@ public class TmdbService {
         }
 
         return results;
+    }
+
+    public Movie getMovieInfo(Integer movieId) throws IOException, NotFoundException {
+        MoviesService moviesService = tmdb.moviesService();
+
+        var response = moviesService
+                .summary(movieId, "ro-RO")
+                .execute();
+
+        if (response.errorBody() != null) {
+            throw new NotFoundException("API call-ul catre TMDB nu s-a putut efectua! Eroare:" + response.errorBody().string());
+        }
+
+        return response.body();
     }
 }

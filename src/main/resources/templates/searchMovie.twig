@@ -10,7 +10,7 @@
                 </h4>
             </div>
         </div>
-        <div class="row mt-2">
+        <div class="row mt-3">
             <div class="col-12">
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -42,7 +42,10 @@
                             $('#searchMovie').addClass('d-none');
                             $('#searchResults').html(data.html);
 
-                            window.history.pushState({"html":data.html,"pageTitle": "Adauga un film nou"},"", "/add/" + movieName.val());
+                            window.history.pushState({
+                                "html": data.html,
+                                "pageTitle": "Adauga un film nou"
+                            }, "", "/search/" + movieName.val());
                         } else {
                             alert('[' + data.status + '] ' + data.responseJSON.message);
                         }

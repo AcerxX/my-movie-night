@@ -36,13 +36,40 @@
                     </a>
                 </div>
                 <div class="col-6">
-                    <a href="https://www.imdb.com/title/tt5848272/">
-                        <button class="btn btn-success btn-sm w-100">
-                            <i class="fas fa-plus"></i> Adauga
-                        </button>
-                    </a>
+                    <button class="btn btn-success btn-sm w-100 add-movie" data-movie-id="{{ movie.id }}">
+                        <i class="fas fa-plus"></i> Adauga
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 {% endfor %}
+
+<script>
+    $('.add-movie').on('click', function () {
+        let movieId = $(this).attr('data-movie-id');
+        var oldHtml = $(this).html();
+
+        $(this).attr('disabled', true);
+        $(this).addClass('disabled');
+        $(this).html('<i class="fas fa-spinner fa-spin"></i> Se adauga...');
+        $.ajax({
+            type: "PUT",
+            url: '/add/' + encodeURIComponent(movieId),
+            success: function (data) {
+                if (data.status === 200) {
+                    $(this).html('<i class="fas fa-check"></i> Adaugat in lista');
+                } else {
+                    alert('[' + data.status + '] ' + data.message);
+                    $(this).removeAttr('disabled');
+                    $(this).html(oldHtml);
+                }
+            },
+            error: function (data) {
+                alert('[' + data.status + '] ' + data.message);
+                $(this).removeAttr('disabled');
+                $(this).html(oldHtml);
+            }
+        })
+    })
+</script>
