@@ -1,0 +1,80 @@
+{% extends "base.twig" %}
+{% block pageTitle %}Autentificare{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block bodyAttributes %}class="bg-dark text-white"{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="offset-2 col-8 mt-5">
+                <img class="img-fluid rounded mx-auto d-block"
+                     src="{{ asset("images/logo_transparent.png") }}" alt="logo_new">
+            </div>
+        </div>
+
+        {% if error is defined %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="row mt-2">
+            <div class="col-12 text-center">
+                <h6>Introduceti datele de login</h6>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
+                    </div>
+                    <input type="text" class="form-control" name="username" placeholder="Utilizator"
+                           aria-label="Utilizator" aria-describedby="basic-addon1" id="username">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon2"><i class="fas fa-key"></i></span>
+                    </div>
+                    <input type="password" class="form-control" placeholder="Parola" aria-label="Parola"
+                           aria-describedby="basic-addon2" name="password" id="password">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <button class="btn btn-success w-100" id="login_button">Login</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#password').on('keypress', function (e) {
+            let keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                redirectToLogin();
+            }
+        });
+
+        $('#login_button').on('click', function () {
+            redirectToLogin();
+        });
+
+        function redirectToLogin() {
+            let username = $('#username').val();
+            let password = $('#password').val();
+
+            window.location.href = '/login/' + username + '/' + password;
+        }
+    </script>
+{% endblock %}

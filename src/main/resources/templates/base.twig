@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>{% block pageTitle %}My Movie Night{% endblock %}</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.2.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" href="/webjars/select2/4.0.5/css/select2.min.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/5.7.1/css/all.css">
+
+    <style>
+        body {
+            font-size: small;
+        }
+
+        .btn {
+            width: 30px;
+            height: 30px;
+            padding: 0 0;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.42857;
+        }
+
+        .btn-sm {
+            width: 30px;
+            height: 22px;
+            border-radius: 15px;
+            text-align: center;
+            padding: 0 0;
+            font-size: .6rem;
+            line-height: 1.5;
+        }
+
+        .btn-lg {
+            width: 50px;
+            height: 50px;
+            padding: 6px 0px;
+            border-radius: 35px;
+            font-size: 24px;
+            line-height: 1.33;
+        }
+    </style>
+    {% block stylesheets %}
+    {% endblock %}
+
+    {% block head %}
+    {% endblock %}
+</head>
+
+<body {% block bodyAttributes %}class="bg-light"{% endblock %}>
+{% block navbar %}
+    <nav class="navbar sticky-top navbar-dark bg-dark">
+        <a href="/" class="navbar-brand p-0 m-0">
+            <img src="{{ asset("images/small_logo.png") }}" width="30" class="img-fluid" alt="logo_small">
+            <small>{% block pageTitle %}My Movie Night{% endblock %}</small>
+        </a>
+        <span class="text-white">{{ username }}</span>
+    </nav>
+{% endblock %}
+
+
+{% block body %}
+{% endblock %}
+
+{% csrf %}
+<script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"></script>
+<script src="/webjars/jquery-form/4.2.1/jquery.form.min.js"></script>
+<script src="/webjars/popper.js/1.14.6/umd/popper.min.js"></script>
+<script src="/webjars/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<script src="/webjars/jquery-cookie/1.4.1-1/jquery.cookie.js"></script>
+<script src="/webjars/select2/4.0.5/js/select2.full.min.js"></script>
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-Token': $('input[name="_csrf"]').val()
+        }
+    });
+</script>
+
+{% block javascripts %}
+{% endblock %}
+
+</body>
+</html>

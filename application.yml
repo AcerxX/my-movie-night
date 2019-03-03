@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/polls
+    username: root
+    password: adgjmptx
+    platform: mysql
+  session:
+    store-type: jdbc
+server:
+  port: 8001
