@@ -4,6 +4,7 @@ package ro.projects.polls.service;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.projects.polls.entity.Movie;
 import ro.projects.polls.entity.User;
 import ro.projects.polls.repository.MovieRepository;
@@ -25,6 +26,7 @@ public class MovieService {
         this.genreService = genreService;
     }
 
+    @Transactional
     public void addMovieToDatabase(Integer movieId, User user) throws IOException, NotFoundException {
         var movieResult = movieRepository.findById(movieId);
 

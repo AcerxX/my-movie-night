@@ -48,27 +48,30 @@
 <script>
     $('.add-movie').on('click', function () {
         let movieId = $(this).attr('data-movie-id');
-        var oldHtml = $(this).html();
+        let oldHtml = $(this).html();
+        let button = $(this);
 
-        $(this).attr('disabled', true);
-        $(this).addClass('disabled');
-        $(this).html('<i class="fas fa-spinner fa-spin"></i> Se adauga...');
+        button.attr('disabled', true);
+        button.addClass('disabled');
+        button.html('<i class="fas fa-spinner fa-spin"></i> Se adauga...');
         $.ajax({
             type: "PUT",
             url: '/add/' + encodeURIComponent(movieId),
             success: function (data) {
                 if (data.status === 200) {
-                    $(this).html('<i class="fas fa-check"></i> Adaugat in lista');
+                    button.html('<i class="fas fa-check"></i> Adaugat in lista');
                 } else {
                     alert('[' + data.status + '] ' + data.message);
-                    $(this).removeAttr('disabled');
-                    $(this).html(oldHtml);
+                    button.removeAttr('disabled');
+                    button.removeClass('disabled');
+                    button.html(oldHtml);
                 }
             },
             error: function (data) {
                 alert('[' + data.status + '] ' + data.message);
-                $(this).removeAttr('disabled');
-                $(this).html(oldHtml);
+                button.removeAttr('disabled');
+                button.removeClass('disabled');
+                button.html(oldHtml);
             }
         })
     })
