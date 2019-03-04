@@ -1,10 +1,12 @@
 package ro.projects.polls.service;
 
 
+import com.uwetrottmann.tmdb2.entities.BaseMovie;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ro.projects.polls.dto.BaseMovieWithStatus;
 import ro.projects.polls.entity.Movie;
 import ro.projects.polls.entity.User;
 import ro.projects.polls.repository.MovieRepository;
@@ -12,6 +14,8 @@ import ro.projects.polls.repository.MovieRepository;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MovieService {
@@ -65,5 +69,34 @@ public class MovieService {
         movieInfo.genres.forEach(genre1 -> movie.addGenre(genreService.getGenreByIdAndName(genre1.id, genre1.name)));
 
         return movie;
+    }
+
+    public List<BaseMovieWithStatus> getMoviesWithStatus(List<BaseMovie> movies) {
+        List<BaseMovieWithStatus> result = new ArrayList<>();
+
+        movies.forEach(baseMovie -> {
+            var movie = movieRepository.findById(baseMovie.id);
+
+            var temp = new BaseMovieWithStatus();
+            temp.id = baseMovie.id;
+            temp.title = baseMovie.title;
+            temp.poster_path = baseMovie.poster_path;
+            temp.vote_average = baseMovie.vote_average;
+            temp.release_date = baseMovie.release_date;
+
+            if (movie.isEmpty() || movie.get().getStatus().equals(Movie.STATUS_DELETED)) {
+                temp.setAlreadyAdded(0);
+            } else {
+                temp.setAlreadyAdded(1);
+            }
+
+            result.add(temp);
+        });
+
+        return result;
+    }
+
+    public List<Movie> getActiveMovies() {
+        return movieRepository.findAllByStatus(Movie.STATUS_AVAILABLE);
     }
 }

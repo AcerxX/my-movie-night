@@ -78,8 +78,9 @@ public class AppController extends UserBoundController {
     @GetMapping("/search-movie/{movieName}")
     public SearchMovieResponse searchMovieLines(Model model, @PathVariable String movieName) {
         var movies = tmdbService.getMoviesBySearchString(movieName);
+        var moviesWithStatus = movieService.getMoviesWithStatus(movies);
 
-        model.addAttribute("movies", movies);
+        model.addAttribute("movies", moviesWithStatus);
         model.addAttribute("searchedText", movieName);
 
         var response = new SearchMovieResponse();
@@ -101,5 +102,13 @@ public class AppController extends UserBoundController {
         }
 
         return response;
+    }
+
+
+    @GetMapping("/vote")
+    public String votePage(Model model) {
+        model.addAttribute("movies", movieService.getActiveMovies());
+
+        return "vote";
     }
 }
