@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ro.projects</groupId>
-	<artifactId>polls</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>polls</name>
+	<artifactId>my-movie-night</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>my-movie-night</name>
 	<description>Polls project for movie night</description>
 
 	<properties>
