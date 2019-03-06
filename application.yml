@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/my_movie_night?useSSL=false
-    username: user
-    password: password
+    username: root
+    password: adgjmptx
     platform: mysql
   session:
     store-type: jdbc
