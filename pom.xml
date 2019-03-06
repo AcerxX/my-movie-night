@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>ro.projects</groupId>
 	<artifactId>my-movie-night</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-RELEASE</version>
 	<name>my-movie-night</name>
 	<description>Polls project for movie night</description>
 
