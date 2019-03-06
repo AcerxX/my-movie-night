@@ -32,6 +32,7 @@
         movieName.on('keypress', function (e) {
             let keyCode = e.keyCode || e.which;
             if (keyCode === 13) {
+                movieName.blur();
                 movieName.attr('disabled', true);
 
                 $.ajax({
