@@ -58,7 +58,8 @@ public class AppController extends UserBoundController {
 
     @GetMapping("/")
     public String homepage(Model model) {
-        model.addAttribute("nextDate", LocalDate.of(2019, 2, 27).format(DateTimeFormatter.ofPattern("EEEE, d MMMM")));
+        model.addAttribute("nextDate", LocalDate.of(2019, 3, 10).format(DateTimeFormatter.ofPattern("EEEE, d MMMM")));
+        model.addAttribute("topRatedMovie", movieService.getTopRatedMovie());
 
         return "homepage";
     }
@@ -106,7 +107,6 @@ public class AppController extends UserBoundController {
 
         return response;
     }
-
 
     @GetMapping("/vote")
     public String votePage(Model model) {

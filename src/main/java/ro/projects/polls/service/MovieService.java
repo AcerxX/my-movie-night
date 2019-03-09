@@ -15,8 +15,6 @@ import ro.projects.polls.repository.RatingRepository;
 import ro.projects.polls.repository.UserRepository;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +68,7 @@ public class MovieService {
                 .setBackdropPath(movieInfo.backdrop_path)
                 .setRuntime(movieInfo.runtime)
                 .setOverview(movieInfo.overview)
-                .setReleaseDate(LocalDate.ofInstant(movieInfo.release_date.toInstant(), ZoneId.systemDefault()))
+                .setReleaseDate(movieInfo.release_date)
                 .setImdbId(movieInfo.imdb_id)
                 .setRating(movieInfo.vote_average)
                 .setStatus(Movie.STATUS_AVAILABLE)
@@ -144,5 +142,9 @@ public class MovieService {
 
         movieVote.setRating(rating);
         ratingRepository.save(movieVote);
+    }
+
+    public Movie getTopRatedMovie() {
+        return movieRepository.topRatedActiveMovies().get(0);
     }
 }

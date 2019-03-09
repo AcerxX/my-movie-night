@@ -1,8 +1,8 @@
 package ro.projects.polls.entity;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,7 +20,7 @@ public class Movie {
     private String backdropPath;
     private Integer runtime;
     private String overview;
-    private LocalDate releaseDate;
+    private Date releaseDate;
     private String imdbId;
     private Double rating;
     private Integer status;
@@ -106,11 +106,11 @@ public class Movie {
         return this;
     }
 
-    public LocalDate getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public Movie setReleaseDate(LocalDate releaseDate) {
+    public Movie setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
         return this;
     }
