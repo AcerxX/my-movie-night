@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class MovieService {
@@ -106,7 +107,7 @@ public class MovieService {
     }
 
     public List<Movie> getActiveMovies() {
-        return movieRepository.findAllByStatus(Movie.STATUS_AVAILABLE);
+        return movieRepository.topRatedActiveMovies();
     }
 
     public List<Rating> getRatingsForUser(User user) {
@@ -122,6 +123,23 @@ public class MovieService {
 
         return results;
     }
+
+    public Map<Integer, Integer> getMoviesRatings() {
+        var movies = movieRepository.findAllByStatus(Movie.STATUS_AVAILABLE);
+
+        Map<Integer, Integer> results = new HashMap<>();
+        movies.forEach(movie -> results.put(movie.getId(), this.getMovieRating(movie)));
+
+        return results;
+    }
+
+    private Integer getMovieRating(Movie movie) {
+        AtomicReference<Integer> temp = new AtomicReference<>(0);
+        movie.getRatings().forEach(rating -> temp.updateAndGet(v -> v + rating.getRating()));
+
+        return temp.get();
+    }
+
 
     public void generateVotesForMovie(Movie movie) {
         var users = userRepository.findAll();

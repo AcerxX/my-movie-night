@@ -11,14 +11,17 @@
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col-12">
+            <div class="col-8 pr-0">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-film"></i></span>
                     </div>
-                    <input id="movieName" name="movieName" autofocus="" class="form-control form-control-sm" type="text"
+                    <input id="movieName" name="movieName" class="form-control form-control-sm" type="text"
                            title="Nume film" placeholder="Nume film">
                 </div>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-success w-100" id="search">Cauta...</button>
             </div>
         </div>
         <div id="searchResults"></div>
@@ -33,34 +36,42 @@
             let keyCode = e.keyCode || e.which;
             if (keyCode === 13) {
                 movieName.blur();
-                movieName.attr('disabled', true);
-
-                $.ajax({
-                    type: "GET",
-                    url: '/search-movie/' + encodeURIComponent(movieName.val().trim()),
-                    success: function (data) {
-                        if (data.status === 200) {
-                            $('#searchMovie').addClass('d-none');
-                            $('#searchResults').html(data.html);
-
-                            window.history.pushState({
-                                "html": data.html,
-                                "pageTitle": "Adauga un film nou"
-                            }, "", "/search/" + movieName.val());
-                        } else {
-                            alert('[' + data.status + '] ' + data.responseJSON.message);
-                        }
-                        movieName.removeAttr('disabled');
-                        movieName.val('');
-                    },
-                    error: function (data) {
-                        alert('[' + data.status + '] ' + data.responseJSON.message);
-                        movieName.removeAttr('disabled');
-                        movieName.val('');
-                    }
-                })
+                search();
             }
         });
+
+        $('#search').on('click', function () {
+            search();
+        });
+
+        function search() {
+            movieName.attr('disabled', true);
+
+            $.ajax({
+                type: "GET",
+                url: '/search-movie/' + encodeURIComponent(movieName.val().trim()),
+                success: function (data) {
+                    if (data.status === 200) {
+                        $('#searchMovie').addClass('d-none');
+                        $('#searchResults').html(data.html);
+
+                        window.history.pushState({
+                            "html": data.html,
+                            "pageTitle": "Adauga un film nou"
+                        }, "", "/search/" + movieName.val());
+                    } else {
+                        alert('[' + data.status + '] ' + data.responseJSON.message);
+                    }
+                    movieName.removeAttr('disabled');
+                    movieName.val('');
+                },
+                error: function (data) {
+                    alert('[' + data.status + '] ' + data.responseJSON.message);
+                    movieName.removeAttr('disabled');
+                    movieName.val('');
+                }
+            });
+        }
 
         {% if movieName is defined %}
             movieName.val('{{ movieName }}');

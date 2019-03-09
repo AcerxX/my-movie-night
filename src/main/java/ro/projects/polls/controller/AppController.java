@@ -112,6 +112,7 @@ public class AppController extends UserBoundController {
     public String votePage(Model model) {
         model.addAttribute("movies", movieService.getActiveMovies());
         model.addAttribute("ratings", movieService.getRatingsForUserAsMap(this.getLoggedUser()));
+        model.addAttribute("moviesRatings", movieService.getMoviesRatings());
 
         return "vote";
     }
