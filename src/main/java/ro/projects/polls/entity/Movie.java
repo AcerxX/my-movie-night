@@ -36,6 +36,9 @@ public class Movie {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "movie")
+    private List<Rating> ratings;
+
     public Movie() {
         this.genres = new ArrayList<>();
     }
@@ -159,6 +162,15 @@ public class Movie {
 
     public Movie addGenre(Genre genre) {
         this.genres.add(genre);
+        return this;
+    }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public Movie setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
         return this;
     }
 }

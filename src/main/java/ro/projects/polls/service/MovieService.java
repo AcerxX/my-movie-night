@@ -8,30 +8,39 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.projects.polls.dto.BaseMovieWithStatus;
 import ro.projects.polls.entity.Movie;
+import ro.projects.polls.entity.Rating;
 import ro.projects.polls.entity.User;
 import ro.projects.polls.repository.MovieRepository;
+import ro.projects.polls.repository.RatingRepository;
+import ro.projects.polls.repository.UserRepository;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MovieService {
     private final TmdbService tmdbService;
     private final MovieRepository movieRepository;
+    private final UserRepository userRepository;
+    private final RatingRepository ratingRepository;
     private final GenreService genreService;
 
     @Autowired
-    public MovieService(TmdbService tmdbService, MovieRepository movieRepository, GenreService genreService) {
+    public MovieService(TmdbService tmdbService, MovieRepository movieRepository, UserRepository userRepository, RatingRepository ratingRepository, GenreService genreService) {
         this.tmdbService = tmdbService;
         this.movieRepository = movieRepository;
+        this.userRepository = userRepository;
+        this.ratingRepository = ratingRepository;
         this.genreService = genreService;
     }
 
     @Transactional
-    public void addMovieToDatabase(Integer movieId, User user) throws IOException, NotFoundException {
+    public Movie addMovieToDatabase(Integer movieId, User user) throws IOException, NotFoundException {
         var movieResult = movieRepository.findById(movieId);
 
         Movie movie;
@@ -45,6 +54,8 @@ public class MovieService {
         }
 
         movieRepository.save(movie);
+
+        return movie;
     }
 
     private Movie getNewMovie(Integer movieId, User user) throws IOException, NotFoundException {
@@ -98,5 +109,40 @@ public class MovieService {
 
     public List<Movie> getActiveMovies() {
         return movieRepository.findAllByStatus(Movie.STATUS_AVAILABLE);
+    }
+
+    public List<Rating> getRatingsForUser(User user) {
+        return ratingRepository.findByUser(user);
+    }
+
+    public Map<Integer, Rating> getRatingsForUserAsMap(User user) {
+        var ratings = ratingRepository.findByUser(user);
+
+        Map<Integer, Rating> results = new HashMap<>();
+
+        ratings.forEach(rating -> results.put(rating.getMovie().getId(), rating));
+
+        return results;
+    }
+
+    public void generateVotesForMovie(Movie movie) {
+        var users = userRepository.findAll();
+        List<Rating> votes = new ArrayList<>();
+
+        users.forEach(user -> votes.add(new Rating().setMovie(movie).setUser(user)));
+
+        ratingRepository.saveAll(votes);
+    }
+
+    public void voteForMovie(Integer movieId, Integer rating, User user) {
+        var movie = movieRepository.findById(movieId);
+        if (movie.isEmpty()) {
+            throw new RuntimeException("Filmul cu id-ul " + movieId + " nu a fost adaugat de nimeni in baza de date!");
+        }
+
+        var movieVote = ratingRepository.findByMovieAndUser(movie.get(), user);
+
+        movieVote.setRating(rating);
+        ratingRepository.save(movieVote);
     }
 }

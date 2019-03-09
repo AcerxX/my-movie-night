@@ -3,6 +3,7 @@ package ro.projects.polls.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,11 +92,13 @@ public class AppController extends UserBoundController {
 
     @ResponseBody
     @PutMapping("/add/{movieId}")
+    @Transactional
     public BaseResponse addMovie(@PathVariable Integer movieId) {
         var response = new BaseResponse();
 
         try {
-            movieService.addMovieToDatabase(movieId, this.getLoggedUser());
+            var movie = movieService.addMovieToDatabase(movieId, this.getLoggedUser());
+            movieService.generateVotesForMovie(movie);
         } catch (Exception e) {
             response.setStatus(500)
                     .setMessage(e.getMessage());
@@ -108,7 +111,16 @@ public class AppController extends UserBoundController {
     @GetMapping("/vote")
     public String votePage(Model model) {
         model.addAttribute("movies", movieService.getActiveMovies());
+        model.addAttribute("ratings", movieService.getRatingsForUserAsMap(this.getLoggedUser()));
 
         return "vote";
+    }
+
+    @ResponseBody
+    @PutMapping("/vote/{movieId}/{rating}")
+    public BaseResponse voteMovie(@PathVariable Integer movieId, @PathVariable Integer rating) {
+        movieService.voteForMovie(movieId, rating, this.getLoggedUser());
+
+        return new BaseResponse();
     }
 }
