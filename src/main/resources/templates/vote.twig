@@ -50,66 +50,13 @@
                 }
             });
         });
-
-        (function () {
-            let start = new Date;
-            start.setDate(10);
-            start.setHours(16, 0, 0); // 11pm
-
-            function pad(num) {
-                return ("0" + parseInt(num)).substr(-2);
-            }
-
-            function tick() {
-                let now = new Date;
-                if (now > start) { // too late, go to tomorrow
-                    start.setDate(start.getDate() + 1);
-                }
-                let remain = ((start - now) / 1000);
-                let hh = pad((remain / 60 / 60) % 60);
-                let mm = pad((remain / 60) % 60);
-                let ss = pad(remain % 60);
-                document.getElementById('time').innerHTML =
-                    hh + " ore " + mm + " minute " + ss + " secunde";
-                setTimeout(tick, 1000);
-
-                if (hh > 24) {
-                    $('#timeAlert').hide();
-                } else {
-                    $('#timeAlert').show();
-                }
-            }
-
-            document.addEventListener('DOMContentLoaded', tick);
-        })();
     </script>
 {% endblock %}
 
 {% block body %}
     <div class="container-fluid">
-        <div class="row mt-2">
-            <div class="col-12">
-                <div class="alert alert-info">
-                    <i class="fas fa-info-circle"></i> Votul se salveaza automat in momentul in care se face slide!
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="alert alert-info">
-                    <i class="fas fa-info-circle"></i> Filemele sunt afisate in ordinea notelor primite!
-                </div>
-            </div>
-        </div>
-
-        <div class="row" id="timeAlert">
-            <div class="col-12">
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-triangle"></i> Grabeste-te!!! Timp ramas: <span id='time'></span>
-                </div>
-            </div>
-        </div>
-
+        <br>
+        <br>
         {% for movie in movies %}
             <div class="row border-bottom border-top border-dark">
                 <div class="col-12">
@@ -177,7 +124,7 @@
             </div>
         {% endfor %}
 
-        <div class="row mt-5">
+        <div class="row my-5">
             <div class="col-12">
                 <a href="/search">
                     <button class="btn btn-outline-primary w-100">
