@@ -14,6 +14,11 @@
                 <h6><strong>{{ movieInfo.title }}</strong></h6>
             </div>
         </div>
+        <div class="row my-2">
+            <div class="col-12">
+                <i>Propus de: {{ movieInfo.user.username }}</i>
+            </div>
+        </div>
         <div class="row mt-3">
             <div class="col-12">
                 {% if movieInfo.overview|length > 0 %}
@@ -26,7 +31,7 @@
         <div class="row my-3">
             <div class="col-12">
                 <table class="table table-striped">
-                    <tr>
+                    <tr class="bg-secondary text-white">
                         <th>
                             User
                         </th>
@@ -40,7 +45,19 @@
                                 {{ rating.user.username }}
                             </td>
                             <td>
-                                {{ rating.rating }}
+                                {% if rating.rating < 20 %}
+                                    <h6 class="d-inline"><i class="fas fa-poop"></i></h6>
+                                    <span class="d-inline">{{ rating.rating }}</span>
+                                {% elseif rating.rating < 50 %}
+                                    <h6 class="d-inline"><i class="far fa-meh-rolling-eyes"></i></h6>
+                                    <span class="d-inline">{{ rating.rating }}</span>
+                                {% elseif rating.rating < 80 %}
+                                    <h6 class="d-inline"><i class="far fa-smile"></i></h6>
+                                    <span class="d-inline">{{ rating.rating }}</span>
+                                {% else %}
+                                    <h6 class="d-inline"><i class="far fa-grin-hearts"></i></h6>
+                                    <span class="d-inline">{{ rating.rating }}</span>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
