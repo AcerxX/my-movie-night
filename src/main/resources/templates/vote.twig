@@ -55,6 +55,16 @@
 
 {% block body %}
     <div class="container-fluid">
+        <div class="row my-3">
+            <div class="col-12">
+                <a href="/search">
+                    <button class="btn btn-outline-primary w-100">
+                        <i class="fas fa-plus"></i> <b>PROPUNE UN FILM</b>
+                    </button>
+                </a>
+            </div>
+        </div>
+
         {% for movie in movies %}
             <div class="row border-bottom border-top border-dark">
                 <div class="col-12">
@@ -121,15 +131,5 @@
                 </div>
             </div>
         {% endfor %}
-
-        <div class="row my-5">
-            <div class="col-12">
-                <a href="/search">
-                    <button class="btn btn-outline-primary w-100">
-                        <i class="fas fa-plus"></i> <b>PROPUNE UN FILM</b>
-                    </button>
-                </a>
-            </div>
-        </div>
     </div>
 {% endblock %}

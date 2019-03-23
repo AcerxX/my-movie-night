@@ -29,14 +29,7 @@
                 </div>
             </div>
             <div class="row mt-1">
-                <div class="col-6">
-                    <a href="#">
-                        <button class="btn btn-primary btn-sm w-100 disabled" disabled>
-                            <i class="fas fa-info-circle"></i> Mai multe
-                        </button>
-                    </a>
-                </div>
-                <div class="col-6">
+                <div class="col-12">
                     {% if movie.alreadyAdded == 0 %}
                         <button class="btn btn-success btn-sm w-100 add-movie" data-movie-id="{{ movie.id }}">
                             <i class="fas fa-plus"></i> Adauga
