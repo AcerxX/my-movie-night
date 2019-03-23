@@ -6,7 +6,7 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.projects.polls.dto.BaseMovieWithStatus;
+import ro.projects.polls.dto.BaseMovieWithExtraInfo;
 import ro.projects.polls.entity.Movie;
 import ro.projects.polls.entity.Rating;
 import ro.projects.polls.entity.User;
@@ -81,13 +81,13 @@ public class MovieService {
         return movie;
     }
 
-    public List<BaseMovieWithStatus> getMoviesWithStatus(List<BaseMovie> movies) {
-        List<BaseMovieWithStatus> result = new ArrayList<>();
+    public List<BaseMovieWithExtraInfo> getMoviesWithStatus(List<BaseMovie> movies) {
+        List<BaseMovieWithExtraInfo> result = new ArrayList<>();
 
         movies.forEach(baseMovie -> {
             var movie = movieRepository.findById(baseMovie.id);
 
-            var temp = new BaseMovieWithStatus();
+            var temp = new BaseMovieWithExtraInfo();
             temp.id = baseMovie.id;
             temp.title = baseMovie.title;
             temp.poster_path = baseMovie.poster_path;
@@ -99,6 +99,7 @@ public class MovieService {
             } else {
                 temp.setAlreadyAdded(1);
             }
+            temp.setGenres(genreService.getGenresByIds(baseMovie.genre_ids));
 
             result.add(temp);
         });

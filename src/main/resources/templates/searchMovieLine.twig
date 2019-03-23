@@ -1,50 +1,73 @@
-<div class="row mt-5 mb-3">
+<div class="row mt-4 mb-3">
     <div class="col-12">
         <h6>Rezultate gasite pentru "{{ searchedText }}" ({{ movies|length }}):</h6>
     </div>
 </div>
 
-{% for movie in movies %}
-    <div class="row border rounded">
-        <div class="col-2 p-0">
-            <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" class="img-fluid"
-                 alt="logo_{{ movie.title }}">
-        </div>
-        <div class="col-10">
-            <div class="row">
-                <div class="col-12">
-                    <strong>{{ movie.title }}</strong>
-                    <br>
-                    <small>
-                        <strong>Nota: </strong>
-                    </small>
-                    <span class="badge badge-warning"><i class="fas fa-star-half-alt"></i> {{ movie.vote_average }}</span>
-
-                    {% if movie.release_date|length > 0 %}
-                        <br>
-                        <small>
-                            <strong>Data lansarii:</strong> {{ movie.release_date|date('d MMMM Y') }}
-                        </small>
-                    {% endif %}
+<div id="results" class="row">
+    <div class="col-12"
+         style="overflow-y: scroll; max-height: 70vh; overflow-scrolling: touch; -webkit-overflow-scrolling: touch;">
+        {% for movie in movies %}
+            <div class="row border rounded">
+                <div class="col-2 p-0">
+                    <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" class="img-fluid"
+                         alt="logo_{{ movie.title }}">
                 </div>
-            </div>
-            <div class="row mt-1">
-                <div class="col-12">
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <strong>{{ movie.title }}</strong>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <small>
+                                        <strong>Nota: </strong>
+                                    </small>
+                                    <span class="badge badge-warning"><i
+                                                class="fas fa-star-half-alt"></i> {{ movie.vote_average }}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <small>
+                                        <strong>Genuri:</strong>
+                                        {% for genre in movie.genres %}
+                                            {{ genre.name }}{% if loop.last == false %},{% endif %}
+                                        {% endfor %}
+                                    </small>
+                                </div>
+                            </div>
+
+                            {% if movie.release_date|length > 0 %}
+                                <div class="row">
+                                    <div class="col-12">
+                                        <small>
+                                            <strong>Data lansarii:</strong> {{ movie.release_date|date('d MMMM Y') }}
+                                        </small>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 p-0 bg-success">
                     {% if movie.alreadyAdded == 0 %}
-                        <button class="btn btn-success btn-sm w-100 add-movie" data-movie-id="{{ movie.id }}">
-                            <i class="fas fa-plus"></i> Adauga
+                        <button class="btn btn-success btn-sm h-100 w-100 add-movie" data-movie-id="{{ movie.id }}">
+                            <i class="fas fa-plus fa-2x"></i>
                         </button>
                     {% else %}
-                        <button class="btn btn-success btn-sm w-100 disabled" disabled>
-                            <i class="fas fa-check"></i> Adaugat in lista
+                        <button class="btn btn-success btn-sm h-100 w-100 disabled" disabled>
+                            <i class="fas fa-check fa-2x"></i>
                         </button>
                     {% endif %}
-
                 </div>
             </div>
-        </div>
+        {% endfor %}
     </div>
-{% endfor %}
+</div>
 
 <script>
     $('.add-movie').on('click', function () {
@@ -54,13 +77,13 @@
 
         button.attr('disabled', true);
         button.addClass('disabled');
-        button.html('<i class="fas fa-spinner fa-spin"></i> Se adauga...');
+        button.html('<i class="fas fa-spinner fa-spin fa-2x"></i>');
         $.ajax({
             type: "PUT",
             url: '/add/' + encodeURIComponent(movieId),
             success: function (data) {
                 if (data.status === 200) {
-                    button.html('<i class="fas fa-check"></i> Adaugat in lista');
+                    button.html('<i class="fas fa-check fa-2x"></i>');
                 } else {
                     alert('[' + data.status + '] ' + data.message);
                     button.removeAttr('disabled');

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import ro.projects.polls.entity.Genre;
 import ro.projects.polls.repository.GenreRepository;
 
+import java.util.List;
+
 @Service
 public class GenreService {
     private final GenreRepository genreRepository;
@@ -32,5 +34,9 @@ public class GenreService {
         }
 
         return genre;
+    }
+
+    public List<Genre> getGenresByIds(List<Integer> genreIds) {
+        return genreRepository.findAllByIdIn(genreIds);
     }
 }
