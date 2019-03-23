@@ -65,71 +65,76 @@
             </div>
         </div>
 
-        {% for movie in movies %}
-            <div class="row border-bottom border-top border-dark">
-                <div class="col-12">
-                    <div class="row">
-                        <div class="col-3 p-0 my-auto">
-                            <img src="https://image.tmdb.org/t/p/w200{{ movie.posterPath }}" class="img-fluid"
-                                 alt="logo_{{ movie.title }}">
-                        </div>
-                        <div class="col-9">
-                            <strong>{{ movie.title }}</strong>
-                            <br>
-                            <small>
-                                <strong>Nota TMDB: </strong>
-                            </small>
-                            <span class="badge badge-warning"><i
-                                        class="fas fa-star-half-alt"></i> {{ movie.rating }}</span>
-                            <br>
-                            <small>
-                                <strong>Genuri: </strong>
-                                {% for genre in movie.genres %}
-                                    {{ genre.name }}{% if loop.last == false %},{% endif %}
-                                {% endfor %}
-                            </small>
-                            <br>
-                            <small>
-                                <strong>Propus de: {{ movie.user.username }}</strong>
-                            </small>
-                            <br>
-                            <small>
-                                <strong>Scor din voturi: {{ moviesRatings[movie.id] }} puncte</strong>
-                            </small>
-                            <div class="row mt-1">
-                                <div class="col-6">
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-sm w-100 disabled" disabled>
-                                            <i class="fas fa-info-circle"></i> Mai multe
-                                        </button>
-                                    </a>
+        <div id="results" class="row">
+            <div class="col-12"
+                 style="overflow-y: scroll; max-height: 80vh; overflow-scrolling: touch; -webkit-overflow-scrolling: touch;">
+                {% for movie in movies %}
+                    <div class="row border-bottom border-top border-dark">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3 p-0 my-auto">
+                                    <img src="https://image.tmdb.org/t/p/w200{{ movie.posterPath }}" class="img-fluid"
+                                         alt="logo_{{ movie.title }}">
                                 </div>
-                                <div class="col-6">
-                                    <a href="https://www.imdb.com/title/{{ movie.imdbId }}/" target="_blank">
-                                        <button class="btn btn-warning btn-sm w-100">
-                                            <i class="fab fa-imdb"></i> IMDb
-                                        </button>
-                                    </a>
+                                <div class="col-9">
+                                    <strong>{{ movie.title }}</strong>
+                                    <br>
+                                    <small>
+                                        <strong>Nota TMDB: </strong>
+                                    </small>
+                                    <span class="badge badge-warning"><i
+                                                class="fas fa-star-half-alt"></i> {{ movie.rating }}</span>
+                                    <br>
+                                    <small>
+                                        <strong>Genuri: </strong>
+                                        {% for genre in movie.genres %}
+                                            {{ genre.name }}{% if loop.last == false %},{% endif %}
+                                        {% endfor %}
+                                    </small>
+                                    <br>
+                                    <small>
+                                        <strong>Propus de: {{ movie.user.username }}</strong>
+                                    </small>
+                                    <br>
+                                    <small>
+                                        <strong>Scor din voturi: {{ moviesRatings[movie.id] }} puncte</strong>
+                                    </small>
+                                    <div class="row mt-1">
+                                        <div class="col-6">
+                                            <a href="#">
+                                                <button class="btn btn-primary btn-sm w-100 disabled" disabled>
+                                                    <i class="fas fa-info-circle"></i> Mai multe
+                                                </button>
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="https://www.imdb.com/title/{{ movie.imdbId }}/" target="_blank">
+                                                <button class="btn btn-warning btn-sm w-100">
+                                                    <i class="fab fa-imdb"></i> IMDb
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row p-1" style="background: #d1ecf1">
+                                <div class="col-1 p-0 pl-1">
+                                    <i class="far fa-thumbs-down"></i>
+                                </div>
+                                <div class="col-10 p-0 pl-1 pt-1">
+                                    <div class="slider" data-movie-id="{{ movie.id }}"
+                                         data-rating="{{ ratings[movie.id].rating }}">
+                                        <div class="ui-slider-handle" data-movie-id="{{ movie.id }}"></div>
+                                    </div>
+                                </div>
+                                <div class="col-1 p-0 pl-1">
+                                    <i class="far fa-grin-hearts"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row p-1" style="background: #d1ecf1">
-                        <div class="col-1 p-0 pl-1">
-                            <i class="far fa-thumbs-down"></i>
-                        </div>
-                        <div class="col-10 p-0 pl-1 pt-1">
-                            <div class="slider" data-movie-id="{{ movie.id }}"
-                                 data-rating="{{ ratings[movie.id].rating }}">
-                                <div class="ui-slider-handle" data-movie-id="{{ movie.id }}"></div>
-                            </div>
-                        </div>
-                        <div class="col-1 p-0 pl-1">
-                            <i class="far fa-grin-hearts"></i>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+        </div>
     </div>
 {% endblock %}
