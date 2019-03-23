@@ -166,4 +166,9 @@ public class MovieService {
     public Movie getTopRatedMovie() {
         return movieRepository.topRatedActiveMovies().get(0);
     }
+
+
+    public Movie getMovie(Integer movieId) {
+        return movieRepository.findMovieById(movieId);
+    }
 }

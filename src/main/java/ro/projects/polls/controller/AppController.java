@@ -125,5 +125,12 @@ public class AppController extends UserBoundController {
         return new BaseResponse();
     }
 
+    @GetMapping("/more-details/{movieId}")
+    public String moreDetails(Model model, @PathVariable Integer movieId) {
+        var movie = movieService.getMovie(movieId);
 
+        model.addAttribute("movieInfo", movie);
+
+        return "movieDetails";
+    }
 }

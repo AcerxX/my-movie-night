@@ -1,0 +1,58 @@
+{% extends "base.twig" %}
+{% block pageTitle %}{{ movieInfo.title }}{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 p-0">
+                <img src="https://image.tmdb.org/t/p/original{{ movieInfo.backdropPath }}" class="img-fluid"
+                     alt="{{ movieInfo.title }}">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12">
+                <h6><strong>{{ movieInfo.title }}</strong></h6>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                {% if movieInfo.overview|length > 0 %}
+                    <i>{{ movieInfo.overview }}</i>
+                {% else %}
+                    <i>Fara descriere</i>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-12">
+                <table class="table table-striped">
+                    <tr>
+                        <th>
+                            User
+                        </th>
+                        <th>
+                            Nota
+                        </th>
+                    </tr>
+                    {% for rating in movieInfo.ratings %}
+                        <tr>
+                            <td>
+                                {{ rating.user.username }}
+                            </td>
+                            <td>
+                                {{ rating.rating }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-12">
+                <a href="javascript:history.back()">
+                    <button class="btn btn-primary w-100"><i class="fas fa-chevron-left"></i> Inapoi</button>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
