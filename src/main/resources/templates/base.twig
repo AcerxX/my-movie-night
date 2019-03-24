@@ -81,6 +81,10 @@
             'X-CSRF-Token': $('input[name="_csrf"]').val()
         }
     });
+
+    $('a').on('click', function () {
+        $(this).trigger('active');
+    })
 </script>
 
 {% block javascripts %}
