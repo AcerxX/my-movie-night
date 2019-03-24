@@ -173,5 +173,9 @@ public class Movie {
         this.ratings = ratings;
         return this;
     }
+
+    public Integer getTotalVotesCount() {
+        return this.getRatings().stream().mapToInt(Rating::getRating).sum();
+    }
 }
 
