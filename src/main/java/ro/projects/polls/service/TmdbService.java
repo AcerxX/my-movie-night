@@ -43,11 +43,15 @@ public class TmdbService {
         return results;
     }
 
-    public Movie getMovieInfo(Integer movieId) throws IOException, NotFoundException {
+    Movie getMovieInfo(Integer movieId) throws IOException, NotFoundException {
+        return this.getMovieInfo(movieId, "ro-RO");
+    }
+
+    Movie getMovieInfo(Integer movieId, String locale) throws IOException, NotFoundException {
         MoviesService moviesService = tmdb.moviesService();
 
         var response = moviesService
-                .summary(movieId, "ro-RO")
+                .summary(movieId, locale)
                 .execute();
 
         if (response.errorBody() != null) {

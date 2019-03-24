@@ -15,10 +15,7 @@ import ro.projects.polls.repository.RatingRepository;
 import ro.projects.polls.repository.UserRepository;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -50,6 +47,7 @@ public class MovieService {
             if (movie.getStatus().equals(Movie.STATUS_DELETED)) {
                 movie.setStatus(Movie.STATUS_AVAILABLE);
             }
+            this.importMovieInfo(movie);
         }
 
         movieRepository.save(movie);
@@ -57,26 +55,41 @@ public class MovieService {
         return movie;
     }
 
-    private Movie getNewMovie(Integer movieId, User user) throws IOException, NotFoundException {
-        var movieInfo = tmdbService.getMovieInfo(movieId);
+    private void importMovieInfo(Movie movie) throws IOException, NotFoundException {
+        var movieInfo = tmdbService.getMovieInfo(movie.getId());
 
-        assert movieInfo.release_date != null;
-        var movie = new Movie()
-                .setId(movieId)
-                .setTitle(movieInfo.title)
+        movie.setTitle(movieInfo.title)
                 .setOriginalTitle(movieInfo.original_title)
                 .setPosterPath(movieInfo.poster_path)
                 .setBackdropPath(movieInfo.backdrop_path)
                 .setRuntime(movieInfo.runtime)
-                .setOverview(movieInfo.overview)
-                .setReleaseDate(movieInfo.release_date)
+                .setReleaseDate(movieInfo.release_date == null ? new Date() : movieInfo.release_date)
                 .setImdbId(movieInfo.imdb_id)
-                .setRating(movieInfo.vote_average)
+                .setRating(movieInfo.vote_average);
+
+        if (movieInfo.genres != null) {
+            movieInfo.genres.forEach(genre1 -> {
+                if (!movie.getGenres().contains(genreService.getGenreByIdAndName(genre1.id, genre1.name))) {
+                    movie.addGenre(genreService.getGenreByIdAndName(genre1.id, genre1.name));
+                }
+            });
+        }
+
+        if (movieInfo.overview != null && movieInfo.overview.length() > 0) {
+            movie.setOverview(movieInfo.overview);
+        } else {
+            var movieInfoEn = tmdbService.getMovieInfo(movie.getId(), "en-US");
+            movie.setOverview(movieInfoEn.overview);
+        }
+    }
+
+    private Movie getNewMovie(Integer movieId, User user) throws IOException, NotFoundException {
+        var movie = new Movie()
+                .setId(movieId)
                 .setStatus(Movie.STATUS_AVAILABLE)
                 .setUser(user);
 
-        assert movieInfo.genres != null;
-        movieInfo.genres.forEach(genre1 -> movie.addGenre(genreService.getGenreByIdAndName(genre1.id, genre1.name)));
+        this.importMovieInfo(movie);
 
         return movie;
     }
@@ -167,8 +180,21 @@ public class MovieService {
         return movieRepository.topRatedActiveMovies().get(0);
     }
 
-
     public Movie getMovie(Integer movieId) {
         return movieRepository.findMovieById(movieId);
+    }
+
+    public void reimportAllMovies() {
+        var movies = movieRepository.findAllByStatus(Movie.STATUS_AVAILABLE);
+
+        movies.forEach(movie -> {
+            try {
+                this.importMovieInfo(movie);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        movieRepository.saveAll(movies);
     }
 }

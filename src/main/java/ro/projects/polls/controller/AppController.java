@@ -133,4 +133,12 @@ public class AppController extends UserBoundController {
 
         return "movieDetails";
     }
+
+    @ResponseBody
+    @GetMapping("/reimport-all")
+    public String reimportAllMoviesInfo() {
+        movieService.reimportAllMovies();
+
+        return "OK";
+    }
 }
