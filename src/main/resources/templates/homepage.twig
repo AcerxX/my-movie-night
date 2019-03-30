@@ -38,7 +38,7 @@
                                          class="img-fluid" alt="{{ newMovie.title }}">
                                     <div class="carousel-caption px-3">
                                         <h6>{{ newMovie.title }}</h6>
-                                        <small>Abia adaugat de {{ newMovie.user.username }}</small>
+                                        <small>Adaugat de curand de {{ newMovie.user.username }}</small>
                                     </div>
                                 </a>
                             </div>
@@ -60,24 +60,42 @@
             </div>
         </div>
 
+
         <div class="row mt-3">
             <div class="col-12">
-                <a href="#" class="disabled">
-                    <button class="btn btn-outline-secondary w-100 disabled">
-                        <i class="fas fa-calendar-day"></i> <b>ALEGE URMATORUL MOVIE NIGHT</b> <span
-                                class="badge badge-warning">In curand</span>
-                    </button>
-                </a>
+                <div class="row">
+                    <div class="col-12">
+                        <h6>Cand ne vedem? <span class="badge badge-warning">Disponibil in curand</span></h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <a href="#" class="disabled">
+                            <button class="btn btn-outline-secondary w-100 disabled">
+                                <i class="fas fa-calendar-day"></i> <b>PROPUNE URMATORUL MOVIE NIGHT</b>
+                            </button>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="row mt-3">
             <div class="col-12">
-                <a href="/vote">
-                    <button class="btn btn-outline-primary w-100">
-                        <i class="fas fa-poll"></i> <b>VOTEAZA</b>
-                    </button>
-                </a>
+                <div class="row">
+                    <div class="col-12">
+                        <h6>Ce vedem?</h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <a href="/vote">
+                            <button class="btn btn-outline-primary w-100">
+                                <i class="fas fa-poll"></i> <b>VOTEAZA</b>
+                            </button>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
