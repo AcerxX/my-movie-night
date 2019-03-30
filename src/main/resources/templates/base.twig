@@ -83,10 +83,10 @@
         }
     });
 
-    $('button').on('click touchstart', function () {
+    $('button').not('.disabled').on('click touchstart', function () {
         $(this).trigger('active');
     });
-    $('a').on('click touchstart', function () {
+    $('a').not('.disabled').on('click touchstart', function () {
         $(this).trigger('active');
     });
 
