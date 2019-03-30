@@ -68,9 +68,9 @@
             </div>
         </div>
 
-        <div id="results" class="row">
-            <div class="col-12"
-                 style="overflow-y: scroll; max-height: 80vh; overflow-scrolling: touch; -webkit-overflow-scrolling: touch; overflow-x: hidden">
+        {#        <div id="results" class="row">#}
+        {#            <div class="col-12"#}
+        {#                 style="overflow-y: scroll; max-height: 80vh; overflow-scrolling: touch; -webkit-overflow-scrolling: touch; overflow-x: hidden">#}
                 {% for movie in movies %}
                     <div class="row border-bottom border-top border-dark {% if loop.last %}mb-5{% endif %}">
                         <div class="col-12">
@@ -161,7 +161,7 @@
                         </div>
                     </div>
                 {% endfor %}
-            </div>
-        </div>
+        {#            </div>#}
+        {#        </div>#}
     </div>
 {% endblock %}

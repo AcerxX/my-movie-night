@@ -4,9 +4,9 @@
     </div>
 </div>
 
-<div id="results" class="row">
-    <div class="col-12"
-         style="overflow-y: scroll; max-height: 70vh; overflow-scrolling: touch; -webkit-overflow-scrolling: touch;">
+{#<div id="results" class="row">#}
+{#    <div class="col-12"#}
+{#         style="overflow-y: scroll; max-height: 70vh; overflow-scrolling: touch; -webkit-overflow-scrolling: touch;">#}
         {% for movie in movies %}
             <div class="row border rounded">
                 <div class="col-2 p-0">
@@ -66,8 +66,8 @@
                 </div>
             </div>
         {% endfor %}
-    </div>
-</div>
+{#    </div>#}
+{#</div>#}
 
 <script>
     $('.add-movie').on('click', function () {
