@@ -1,85 +1,63 @@
 {% extends "base.twig" %}
 {% block pageTitle %}My Movie Night{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .carousel-caption {
+            background: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <div class="container-fluid">
-        <div class="row mt-2">
-            <div class="col-12">
-                <h6><strong>Cel mai votat film in acest moment:</strong></h6>
-            </div>
-        </div>
         <div class="row">
-            <div class="col-4 p-0">
-                <img src="https://image.tmdb.org/t/p/w500{{ topRatedMovie.posterPath }}" class="img-fluid"
-                     alt="{{ topRatedMovie.title }}">
-            </div>
-            <div class="col-8">
-                <div class="row">
-                    <div class="col-8">
-                        <strong>{{ topRatedMovie.title }}</strong>
+            <div class="bd-example">
+                <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+                        {% for newMovie in lastThreeMovies %}
+                            <li data-target="#carouselExampleCaptions" data-slide-to="{{ loop.index + 1 }}"></li>
+                        {% endfor %}
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <a href="/more-details/{{ topRatedMovie.id }}">
+                                <img src="https://image.tmdb.org/t/p/original{{ topRatedMovie.backdropPath }}"
+                                     class="img-fluid" alt="{{ topRatedMovie.title }}">
+                                <div class="carousel-caption">
+                                    <h6>{{ topRatedMovie.title }}</h6>
+                                    <small>Cel mai votat film in acest moment</small>
+                                </div>
+                            </a>
+                        </div>
+                        {% for newMovie in lastThreeMovies %}
+                            <div class="carousel-item">
+                                <a href="/more-details/{{ newMovie.id }}">
+                                    <img src="https://image.tmdb.org/t/p/original{{ newMovie.backdropPath }}"
+                                         class="img-fluid" alt="{{ newMovie.title }}">
+                                    <div class="carousel-caption">
+                                        <h6>{{ newMovie.title }}</h6>
+                                        <span class="badge badge-warning">Proaspat in lista</span>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
                     </div>
-                    <div class="col-4">
-                        <span class="badge badge-warning"><i
-                                    class="fas fa-star-half-alt"></i> {{ topRatedMovie.rating }}</span>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <small>
-                            <strong>Genuri: </strong>
-                            {% for genre in topRatedMovie.genres %}
-                                {{ genre.name }}{% if loop.last == false %},{% endif %}
-                            {% endfor %}
-                        </small>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <small>
-                            <strong>Data lansarii: </strong> {{ topRatedMovie.releaseDate|date('d MMMM Y') }}
-                        </small>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <small>
-                            <strong>Durata: </strong> {{ topRatedMovie.runtime }} minute
-                        </small>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <small>
-                            <strong>Propus de: </strong> {{ topRatedMovie.user.username }}
-                        </small>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <small>
-                            <strong>Il vom vedea: </strong> {{ nextDate }}
-                        </small>
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col-6">
-                        <a href="/more-details/{{ topRatedMovie.id }}">
-                            <button class="btn btn-primary btn-sm w-100">
-                                <i class="fas fa-info-circle"></i> Mai multe
-                            </button>
-                        </a>
-                    </div>
-                    <div class="col-6">
-                        <a href="https://www.imdb.com/title/{{ topRatedMovie.imdbId }}/" target="_blank">
-                            <button class="btn btn-warning btn-sm w-100">
-                                <i class="fab fa-imdb"></i> IMDb
-                            </button>
-                        </a>
-                    </div>
+                    <a class="carousel-control-prev no-overlay" href="#carouselExampleCaptions" role="button"
+                       data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next no-overlay" href="#carouselExampleCaptions" role="button"
+                       data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
             </div>
         </div>
 
-        <hr>
 
         <div class="row mt-3">
             <div class="col-12">
@@ -110,4 +88,12 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('.carousel').carousel({
+            interval: 5000
+        })
+    </script>
 {% endblock %}

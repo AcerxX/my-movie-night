@@ -1,6 +1,7 @@
 package ro.projects.polls.entity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,7 @@ public class Movie {
     private String imdbId;
     private Double rating;
     private Integer status;
+    private LocalDateTime created;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -41,6 +43,7 @@ public class Movie {
 
     public Movie() {
         this.genres = new ArrayList<>();
+        this.created = LocalDateTime.now();
     }
 
     public Integer getId() {
@@ -171,6 +174,15 @@ public class Movie {
 
     public Movie setRatings(List<Rating> ratings) {
         this.ratings = ratings;
+        return this;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public Movie setCreated(LocalDateTime created) {
+        this.created = created;
         return this;
     }
 

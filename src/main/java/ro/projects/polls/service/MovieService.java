@@ -180,6 +180,10 @@ public class MovieService {
         return movieRepository.topRatedActiveMovies().get(0);
     }
 
+    public List<Movie> getLastThreeAddedMovies() {
+        return movieRepository.lastThreeMovies().subList(0, 3);
+    }
+
     public Movie getMovie(Integer movieId) {
         return movieRepository.findMovieById(movieId);
     }

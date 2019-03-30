@@ -60,6 +60,7 @@ public class AppController extends UserBoundController {
     public String homepage(Model model) {
         model.addAttribute("nextDate", LocalDate.of(2019, 3, 10).format(DateTimeFormatter.ofPattern("EEEE, d MMMM")));
         model.addAttribute("topRatedMovie", movieService.getTopRatedMovie());
+        model.addAttribute("lastThreeMovies", movieService.getLastThreeAddedMovies());
 
         return "homepage";
     }
